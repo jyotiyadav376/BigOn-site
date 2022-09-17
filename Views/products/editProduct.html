@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit page</title>
+</head>
+<body>
+
+
+<h1> Edit Product</h1>
+<form action="" method="post" >
+
+        Name: <input type="text" name="name" id="name"><br>
+        Price: <input type="text" name="price" id="price"><br>
+        <input type="hidden" name="prodid" id="prodid">
+        <input type="button" value="Update Product" onclick="updateData()">
+
+
+    </form>
+
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+var id = params.get('prod_id');
+
+
+
+fetch('http://localhost:9000/product/get-single-product/'+id, {
+method: 'GET',
+}).then((response) => response.json())
+.then((data) => {
+    const cateED = data.data;
+   document.getElementById('name').value = cateED.name;
+    document.getElementById('price').value = cateED.price;
+    document.getElementById('prodid').value = cateED._id;
+
+    
+});
+
+
+function updateData(){
+            var formdata = new FormData();
+            
+            var name = document.getElementById('name').value;
+            var price = document.getElementById('price').value;
+            var prodid = document.getElementById('prodid').value;
+
+
+            var data = {
+                name:name,
+                price:price,
+                prodid:prodid
+            };
+
+            fetch('http://localhost:9000/product/update-product', {
+            method: 'POST',
+            body:JSON.stringify(data),
+            headers:{
+                'Content-Type':'application/json'
+            }
+            }).then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                window.location.href = "getProduct.html";
+            }).catch((err)=>{
+                console.log(err);
+            })
+
+
+        }
+
+    </script>
+</body>
+</html>

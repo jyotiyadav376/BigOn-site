@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product card</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script> 
+
+        <link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+
+    <style>
+        .card {
+
+            padding: 10px;
+            width: 300px;
+            display: inline-block;
+            /* margin: 10px; */
+            height: 300px;
+            /* background-color: #cb94f2; */
+            color: black;
+            margin-bottom: 50px;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-left: 20px;
+        }
+
+
+   .starcolor{
+    /* background-color:goldenrod; */
+    color:goldenrod;
+   }
+
+    </style>
+
+</head>
+
+<body>
+    <div id="box"></div>
+
+    <script>
+      fetch('http://localhost:9000/product/get-product', {
+            method: 'GET',
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                var bodydata = '';
+                data?.data.forEach((element, index) => {
+                    bodydata += `
+
+
+                    <div class="card">
+                        <div>
+                            
+                        <img src="./imagecard/laptop.jpg" width="200" height="100">
+   
+                            </div>
+                             Sr.No:${++index}<br>
+                            Name:${element.name}<br>
+                            <i class="fa fa-star-o starcolor"" aria-hidden="true"></i>
+                            <i class="fa fa-star-o starcolor" aria-hidden="true"></i>
+                            <i class="fa fa-star-o starcolor" aria-hidden="true"></i>
+                            <i class="fa fa-star-o starcolor" aria-hidden="true"></i>
+                            <i class="fa fa-star-o starcolor" aria-hidden="true"></i><br>
+                            Price:${element.price}<br>
+                            </div>`
+                })
+                document.getElementById("box").innerHTML = bodydata;
+
+            });
+
+
+
+
+    </script>
+</body>
+
+</html>

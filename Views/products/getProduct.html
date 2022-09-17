@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product list</title>
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+        
+        li {
+            float: right;
+        }
+        
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover {
+          background-color: #111;
+        }
+        .addbutton{
+            background-color: aqua;
+            border-radius: 5px;
+            padding: 5px;
+            color: #111;
+            margin-left: 600px;
+        text-decoration: none;
+        }
+        .tablecl{
+            margin-bottom: 60px;
+        }
+        </style>
+</head>
+<body>
+    <!-- <ul>
+        <li><a href="file:///E:/Jyoti%20TryCatch%20Classes/Node%20js/session10/view/products/getProduct.html">Product Page</a></li>
+        <li><a href="file:///E:/Jyoti%20TryCatch%20Classes/Node%20js/session10/view/getUser.html">User Page</a></li>
+        </ul> -->
+    <table border="1" style="width:100%" class="tablecl">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="tablebody">
+
+        </tbody>
+
+    </table>
+    <a href="addProduct.html" class="addbutton">Add Product</a>
+
+    
+    <script>
+        fetch('http://localhost:9000/product/get-product', {
+            method: 'GET', 
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                var bodydata = '';
+                data?.data?.forEach((element,index) => {
+                    bodydata += `
+                        <tr> 
+                            <td>${++index}</td>
+                            <td>${element.name}</td>
+                            <td>${element.price}</td>
+                            <td><button onClick="editProduct('${element._id}');"">Edit</button> 
+                                <button onClick="deleteProduct('${element._id}');">Delete</button>
+                                </td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('tablebody').innerHTML = bodydata;
+            });
+
+
+            function deleteProduct(id){
+                alert("You are deleting=="+id)
+                fetch('http://localhost:9000/product/delete-product/'+id, {
+                    method: 'GET', 
+                }).then((response) => {
+                    if(response.status === 200){
+                        window.location.href = window.location.href
+                    }
+                })
+                   
+            }
+
+            function editProduct(id){
+                window.location.href = "editProduct.html?prod_id="+id;
+            } 
+    </script>
+</body>
+</html>
